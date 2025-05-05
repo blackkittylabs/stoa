@@ -2,7 +2,18 @@
 import '../app.css';
 import { ModeWatcher } from "mode-watcher";
 import Navbar from '../components/Navbar.svelte';
+import { onMount } from 'svelte';
+import { sdk } from "@farcaster/frame-sdk";
+import { appContextStore } from "$stores/appContext.svelte";
+
 const { children } = $props();
+
+onMount(async () => {
+  let context = await sdk.context;
+  if (context) {
+    appContextStore.setAppContext("miniapp");
+  }
+});
 </script>
 
 <ModeWatcher />
@@ -13,8 +24,7 @@ const { children } = $props();
       <div class="h-32 md:h-10"></div>
     </div>
   </main>
-  <!-- TODO: Make this bottom padding dynamic -->
-  <nav class="sticky bottom-6 left-0 right-0 border-t">
+  <nav class="sticky left-0 right-0 border-t {appContextStore.appContext === 'miniapp' ? 'bottom-6' : 'bottom-0'}">
     <div class="container mx-auto py-4">
       <Navbar />
     </div>
