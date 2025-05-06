@@ -6,7 +6,7 @@ import { Sparkles, Telescope, Settings } from "@lucide/svelte";
 <nav>
   <div class="flex h-12 items-center justify-between text-sm font-semibold">
     <a
-      class="p-4 ps-0"
+      class="p-4 ps-4"
       href="/create"
       aria-current={page.url.pathname === "/create"}
     >
@@ -20,7 +20,7 @@ import { Sparkles, Telescope, Settings } from "@lucide/svelte";
       <Telescope strokeWidth={page.url.pathname === "/explore" ? 2.25 : 2} />
     </a>
     <a
-      class="p-4 pe-0"
+      class="p-4 pe-4"
       href="/settings"
       aria-current={page.url.pathname === "/settings"}
     >
