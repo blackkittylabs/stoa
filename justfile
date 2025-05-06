@@ -1,15 +1,9 @@
-# lint the javascript code
-lint-js:
-  pnpm format-lint
+# check code for errors
+check:
+    pnpm full-check
 
-# lint and fix the javascript code
-lint-js-fix:
-  pnpm format-lint:fix
-
-# add a shadcn component
-shadcn-add *args='':
-  pnpm dlx shadcn-svelte@next add {{args}} -y && pnpm format-lint:fix
-
-# update shadcn components
-shadcn-update:
-  pnpm dlx shadcn-svelte@next update -a -y && pnpm format-lint:fix
+# update toolchain and dependencies
+update:
+    pnpm self-update
+    pnpm up
+    pnpm dlx shadcn-svelte@next update -a -y && just check

@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": []
+    "ignore": ["src/lib/components/ui"]
   },
   "formatter": {
     "enabled": true,

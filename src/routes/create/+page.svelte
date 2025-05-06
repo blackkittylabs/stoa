@@ -12,24 +12,24 @@ import {
 // Define a type-safe action for handling events
 function useAction(node: HTMLElement, handler: () => void) {
   const handleClick = () => handler();
-  node.addEventListener('click', handleClick);
-  
+  node.addEventListener("click", handleClick);
+
   return {
     destroy() {
-      node.removeEventListener('click', handleClick);
-    }
+      node.removeEventListener("click", handleClick);
+    },
   };
 }
 
 // Define a type-safe action for handling keyboard events
 function useKeyAction(node: HTMLElement, handler: (e: KeyboardEvent) => void) {
   const handleKeydown = (e: KeyboardEvent) => handler(e);
-  node.addEventListener('keydown', handleKeydown);
-  
+  node.addEventListener("keydown", handleKeydown);
+
   return {
     destroy() {
-      node.removeEventListener('keydown', handleKeydown);
-    }
+      node.removeEventListener("keydown", handleKeydown);
+    },
   };
 }
 
@@ -48,7 +48,7 @@ function addComment(): void {
 
 // Handle input keydown
 function handleKeyDown(e: KeyboardEvent): void {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     addComment();
   }
 }
