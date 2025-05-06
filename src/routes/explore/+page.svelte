@@ -32,7 +32,7 @@ function getImageUrl(id: string): string {
 }
 </script>
 
-<div class="w-full py-6 max-w-3xl mx-auto px-4">
+<div class="w-full py-6">
   <h1 class="text-3xl font-bold mb-6">Explore Conversations</h1>
 
   <div class="space-y-4">
@@ -45,7 +45,7 @@ function getImageUrl(id: string): string {
         tabindex="0"
       >
         <Card class="overflow-hidden">
-          <div class="flex items-center p-4">
+          <div class="flex p-4">
             <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mr-4">
               <img
                 src={getImageUrl(discussion.id)}
@@ -53,13 +53,13 @@ function getImageUrl(id: string): string {
                 class="w-full h-full object-cover"
               />
             </div>
-            <div class="flex-1 h-24 sm:h-28 flex flex-col justify-between">
-              <div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div class="mb-2">
                 <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
                 <p class="text-sm text-muted-foreground">By {discussion.author}</p>
                 <p class="text-sm mt-2 line-clamp-2">{discussion.description}</p>
               </div>
-              <div class="flex justify-between text-xs sm:text-sm text-muted-foreground">
+              <div class="flex justify-between text-xs sm:text-sm text-muted-foreground mt-auto">
                 <div>{discussion.comments.length} comments</div>
                 <div>Updated {getRelativeTime(discussion.updatedAt)}</div>
               </div>

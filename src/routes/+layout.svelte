@@ -54,7 +54,9 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
     </aside>
     <div class="web-content-container">
       <main class="web-main-content">
-        {@render children()}
+        <div class="content-container max-w-4xl w-full">
+          {@render children()}
+        </div>
       </main>
       <WebFooter />
     </div>
@@ -63,14 +65,14 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
   <div class="flex flex-col h-screen">
     <div class="flex-1 overflow-hidden">
       <main class="h-full overflow-y-auto pb-20">
-        <div class="container mx-auto px-4 pt-6">
+        <div class="container mx-auto px-4 pt-6 max-w-4xl">
           {@render children()}
           <div class="h-10"></div>
         </div>
       </main>
     </div>
     <nav class="sticky bottom-0 left-0 right-0 border-t bg-background z-10">
-      <div class="container mx-auto px-4">
+      <div class="container mx-auto px-4 max-w-4xl">
         <Navbar />
       </div>
       {#if isMiniapp}
@@ -118,5 +120,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
     flex: 1;
     overflow-y: auto;
     padding: 1.5rem;
+    display: flex;
+    justify-content: center;
   }
 </style>
