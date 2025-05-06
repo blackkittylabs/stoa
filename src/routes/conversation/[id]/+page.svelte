@@ -16,8 +16,8 @@ import { Button } from "$lib/components/ui/button";
 import { goto } from "$app/navigation";
 import { Separator } from "$lib/components/ui/separator";
 
-const discussionId = $page.params.id;
-const discussion = MOCK_DISCUSSIONS.find((d) => d.id === discussionId);
+const conversationId = $page.params.id;
+const conversation = MOCK_DISCUSSIONS.find((d) => d.id === conversationId);
 
 // Function to handle user reactions
 function handleReaction(
@@ -35,7 +35,7 @@ function goToExplore() {
 }
 </script>
 
-{#if discussion}
+{#if conversation}
   <div class="container mx-auto px-4 py-6">
     <div>
       <button
@@ -47,22 +47,22 @@ function goToExplore() {
     </div>
     
     <div class="bg-card rounded-lg shadow-sm p-6 mb-8">
-      <h1 class="text-3xl font-bold mb-2">{discussion.title}</h1>
+      <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
       <div class="mb-2 text-sm text-muted-foreground">
-        By {discussion.author} · Created {getRelativeTime(discussion.createdAt)}
+        By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
       </div>
-      <p class="text-lg mb-4">{discussion.description}</p>
+      <p class="text-lg mb-4">{conversation.description}</p>
     </div>
     
     <div class="mb-4">
-      <h2 class="text-2xl font-semibold mb-4">Comments ({discussion.comments.length})</h2>
+      <h2 class="text-2xl font-semibold mb-4">Comments ({conversation.comments.length})</h2>
       <Separator class="mb-6" />
       
-      {#if discussion.comments.length === 0}
+      {#if conversation.comments.length === 0}
         <p class="text-center text-muted-foreground py-8">No comments yet. Be the first to comment!</p>
       {:else}
         <div class="space-y-4">
-          {#each discussion.comments as comment}
+          {#each conversation.comments as comment}
             <Card class="shadow-sm">
               <CardHeader>
                 <div class="flex justify-between items-start">
@@ -107,7 +107,7 @@ function goToExplore() {
   </div>
 {:else}
   <div class="container mx-auto px-4 py-6 text-center">
-    <p class="text-xl mb-4">Discussion not found</p>
+    <p class="text-xl mb-4">Conversation not found</p>
     <button 
       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       on:click={goToExplore}

@@ -13,20 +13,20 @@ import { Button } from "$lib/components/ui/button";
 import { goto } from "$app/navigation";
 
 // Function to handle card click
-function navigateToDiscussion(id: string) {
-  goto(`/discussion/${id}`);
+function navigateToConversation(id: string) {
+  goto(`/conversation/${id}`);
 }
 </script>
 
 <div class="container mx-auto px-4 py-6">
-  <h1 class="text-3xl font-bold mb-6">Explore Discussions</h1>
-  
+  <h1 class="text-3xl font-bold mb-6">Explore Conversations</h1>
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {#each MOCK_DISCUSSIONS as discussion}
-      <div 
-        class="cursor-pointer" 
-        on:click={() => navigateToDiscussion(discussion.id)} 
-        on:keydown={(e) => e.key === 'Enter' && navigateToDiscussion(discussion.id)}
+      <div
+        class="cursor-pointer"
+        on:click={() => navigateToConversation(discussion.id)}
+        on:keydown={(e) => e.key === 'Enter' && navigateToConversation(discussion.id)}
         role="button"
         tabindex="0"
       >
