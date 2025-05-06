@@ -2,6 +2,8 @@
 import "../app.css";
 import { ModeWatcher } from "mode-watcher";
 import Navbar from "../components/Navbar.svelte";
+import WebSidebar from "../components/WebSidebar.svelte";
+import WebFooter from "../components/WebFooter.svelte";
 import { onMount } from "svelte";
 import { sdk } from "@farcaster/frame-sdk";
 import { appContextStore } from "$stores/appContext.svelte";
@@ -14,27 +16,45 @@ onMount(async () => {
     appContextStore.setAppContext("miniapp");
   }
 });
+
+const isWeb = $derived(appContextStore.appContext === "web");
+const isMiniapp = $derived(appContextStore.appContext === "miniapp");
 </script>
 
 <ModeWatcher />
-<div class="flex flex-col h-screen">
-  <div class="flex-1 overflow-hidden">
-    <main class="h-full overflow-y-auto pb-20">
-      <div class="container mx-auto pt-8">
+
+{#if isWeb}
+  <div class="web-layout-grid">
+    <aside class="web-sidebar-container">
+      <WebSidebar />
+    </aside>
+    <div class="web-content-container">
+      <main class="web-main-content">
         {@render children()}
-        <div class="h-10"></div>
-      </div>
-    </main>
-  </div>
-  <nav class="sticky bottom-0 left-0 right-0 border-t bg-background z-10">
-    <div class="container mx-auto">
-      <Navbar />
+      </main>
+      <WebFooter />
     </div>
-    {#if appContextStore.appContext === 'miniapp'}
-      <div class="h-6"></div> <!-- Extra space for miniapp mode -->
-    {/if}
-  </nav>
-</div>
+  </div>
+{:else}
+  <div class="flex flex-col h-screen">
+    <div class="flex-1 overflow-hidden">
+      <main class="h-full overflow-y-auto pb-20">
+        <div class="container mx-auto px-4 pt-6">
+          {@render children()}
+          <div class="h-10"></div>
+        </div>
+      </main>
+    </div>
+    <nav class="sticky bottom-0 left-0 right-0 border-t bg-background z-10">
+      <div class="container mx-auto px-4">
+        <Navbar />
+      </div>
+      {#if isMiniapp}
+        <div class="h-6"></div> <!-- Extra space for miniapp mode -->
+      {/if}
+    </nav>
+  </div>
+{/if}
 
 <style>
   :global(html, body) {
@@ -42,5 +62,37 @@ onMount(async () => {
     margin: 0;
     padding: 0;
     overflow: hidden;
+  }
+
+  .web-layout-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .web-sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    z-index: 10;
+  }
+
+  .web-content-container {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .web-main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
   }
 </style>

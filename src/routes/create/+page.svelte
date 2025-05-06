@@ -76,7 +76,7 @@ function handleSubmit(): void {
 }
 </script>
 
-<div class="container mx-auto py-10 px-4 max-w-3xl">
+<div class="w-full py-6">
   <h1 class="text-3xl font-bold mb-6">Start a conversation</h1>
 
   <Card class="mb-8">

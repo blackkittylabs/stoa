@@ -36,7 +36,7 @@ function goToExplore() {
 </script>
 
 {#if conversation}
-  <div class="container mx-auto px-4 py-6">
+  <div class="w-full py-6">
     <div>
       <button
         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 mb-4"
@@ -106,7 +106,7 @@ function goToExplore() {
     </div>
   </div>
 {:else}
-  <div class="container mx-auto px-4 py-6 text-center">
+  <div class="w-full py-6 text-center">
     <p class="text-xl mb-4">Conversation not found</p>
     <button 
       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"

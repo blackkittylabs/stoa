@@ -8,7 +8,7 @@ let currentTheme = $state<"light" | "dark" | "system">(userPrefersMode.current);
 let anonymousMode = $state<boolean>(false);
 </script>
 
-<div class="container py-8 max-w-3xl mx-auto">
+<div class="w-full py-6">
   <h1 class="text-3xl font-bold mb-6">Settings</h1>
 
   <Card.Root class="mb-6">
