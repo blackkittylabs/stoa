@@ -1,8 +1,8 @@
 <script lang="ts">
-import '../app.css';
+import "../app.css";
 import { ModeWatcher } from "mode-watcher";
-import Navbar from '../components/Navbar.svelte';
-import { onMount } from 'svelte';
+import Navbar from "../components/Navbar.svelte";
+import { onMount } from "svelte";
 import { sdk } from "@farcaster/frame-sdk";
 import { appContextStore } from "$stores/appContext.svelte";
 
