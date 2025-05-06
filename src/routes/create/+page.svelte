@@ -77,44 +77,41 @@ function handleSubmit(): void {
 </script>
 
 <div class="container mx-auto py-10 px-4 max-w-3xl">
-  <h1 class="text-3xl font-bold mb-6">Create</h1>
-  
+  <h1 class="text-3xl font-bold mb-6">Start a conversation</h1>
+
   <Card class="mb-8">
-    <CardHeader>
-      <CardTitle>Basic Info</CardTitle>
-    </CardHeader>
     <CardContent>
       <div class="space-y-4">
         <div class="space-y-2">
           <label for="title" class="text-sm font-medium">Title</label>
           <Input id="title" bind:value={title} placeholder="Title" />
         </div>
-        
+
         <div class="space-y-2">
           <label for="description" class="text-sm font-medium">Description</label>
-          <Textarea 
-            id="description" 
-            bind:value={description} 
-            placeholder="Description" 
+          <Textarea
+            id="description"
+            bind:value={description}
+            placeholder="Description"
             rows={3}
           />
         </div>
       </div>
     </CardContent>
   </Card>
-  
+
   <Card class="mb-8">
     <CardHeader>
-      <CardTitle>Seed Comments</CardTitle>
+      <CardTitle>Initial comments</CardTitle>
     </CardHeader>
     <CardContent>
       <div class="space-y-4">
         <div class="flex space-x-2">
           <div class="flex-1">
             <span use:useKeyAction={handleKeyDown}>
-              <Input 
-                bind:value={currentSeedComment} 
-                placeholder="New comment" 
+              <Input
+                bind:value={currentSeedComment}
+                placeholder="New comment"
               />
             </span>
           </div>
@@ -122,7 +119,7 @@ function handleSubmit(): void {
             <Button>Add</Button>
           </span>
         </div>
-        
+
         {#if seedComments.length > 0}
           <div class="border rounded-md divide-y mt-4">
             {#each seedComments as comment, index}
@@ -140,8 +137,8 @@ function handleSubmit(): void {
       </div>
     </CardContent>
   </Card>
-  
-  <div class="flex justify-end">
+
+  <div class="flex justify-center">
     <span use:useAction={handleSubmit}>
       <Button disabled={!title || !description || seedComments.length === 0}>
         Create

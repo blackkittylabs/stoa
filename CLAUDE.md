@@ -1,1 +1,1 @@
-Refer to the [README.md](./README.md) for context.
+Please read the README.md for full context before starting.
