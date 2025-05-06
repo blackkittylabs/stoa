@@ -1,5 +1,5 @@
 # Stoa
-An app that encourages meaningful discussion and offers accurate insight into community sentiment.
+Welcome to the Stoa codebase. Stoa is an app that encourages meaningful discussion and offers accurate insight into community sentiment.
 
 ## Development guide
 This guide is for both humans and AI agents. Thank you for contributing to the project.
@@ -11,9 +11,9 @@ Here is the tech we use and their docs:
 - shadcn-svelte: https://next.shadcn-svelte.com/docs
 
 ### Coding practices
-- Always strive to write minimal, elegant code with best practices.
-- Always check your work with svelte-check and linter: `just check`.
-- The UI should be responsive and look good on mobile and desktop devices.
+- Write minimal and elegant code using best practices
+- Check your code with `just check`
+- Ensure the UI is responsive, looking good on both mobile and desktop views
 
 ### UI components
 We use shadcn-svelte, and all components are already installed:

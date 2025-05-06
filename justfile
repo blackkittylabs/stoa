@@ -2,6 +2,10 @@
 check:
     pnpm full-check
 
+# format and lint
+lint:
+    pnpm format-lint:fix
+
 # update toolchain and dependencies
 update:
     pnpm self-update
