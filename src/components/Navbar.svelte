@@ -4,7 +4,7 @@ import { Sparkles, Telescope, Settings } from "@lucide/svelte";
 </script>
 
 <nav>
-  <div class="flex h-5 items-center justify-between text-sm font-semibold">
+  <div class="flex h-12 items-center justify-between text-sm font-semibold">
     <a
       class="p-4 ps-0"
       href="/create"

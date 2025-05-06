@@ -18,16 +18,21 @@ onMount(async () => {
 
 <ModeWatcher />
 <div class="flex flex-col h-screen">
-  <main class="flex-1 overflow-y-auto">
-    <div class="container mx-auto pt-8">
-      {@render children()}
-      <div class="h-32 md:h-10"></div>
-    </div>
-  </main>
-  <nav class="sticky left-0 right-0 border-t bg-background z-10 {appContextStore.appContext === 'miniapp' ? 'bottom-6' : 'bottom-0'}">
-    <div class="container mx-auto py-4">
+  <div class="flex-1 overflow-hidden">
+    <main class="h-full overflow-y-auto pb-20">
+      <div class="container mx-auto pt-8">
+        {@render children()}
+        <div class="h-10"></div>
+      </div>
+    </main>
+  </div>
+  <nav class="sticky bottom-0 left-0 right-0 border-t bg-background z-10">
+    <div class="container mx-auto">
       <Navbar />
     </div>
+    {#if appContextStore.appContext === 'miniapp'}
+      <div class="h-6"></div> <!-- Extra space for miniapp mode -->
+    {/if}
   </nav>
 </div>
 
