@@ -24,7 +24,7 @@ onMount(async () => {
       <div class="h-32 md:h-10"></div>
     </div>
   </main>
-  <nav class="sticky left-0 right-0 border-t {appContextStore.appContext === 'miniapp' ? 'bottom-6' : 'bottom-0'}">
+  <nav class="sticky left-0 right-0 border-t bg-background z-10 {appContextStore.appContext === 'miniapp' ? 'bottom-6' : 'bottom-0'}">
     <div class="container mx-auto py-4">
       <Navbar />
     </div>
