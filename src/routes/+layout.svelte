@@ -9,21 +9,45 @@ import { sdk } from "@farcaster/frame-sdk";
 import { appContextStore } from "$stores/appContext.svelte";
 
 const { children } = $props();
+let isMobile = $state(false);
 
-onMount(async () => {
-  let context = await sdk.context;
+// Check if the viewport is mobile-sized
+const checkMobile = () => {
+  isMobile = window.innerWidth < 768; // Using the same breakpoint as IsMobile hook
+};
+
+// Set up context separately from the resize listener
+const setupContext = async () => {
+  const context = await sdk.context;
   if (context) {
     appContextStore.setAppContext("miniapp");
   }
+};
+
+onMount(() => {
+  // Set up Farcaster context
+  setupContext();
+
+  // Initial check for mobile
+  checkMobile();
+
+  // Add resize listener
+  window.addEventListener("resize", checkMobile);
+
+  // Return cleanup function
+  return () => {
+    window.removeEventListener("resize", checkMobile);
+  };
 });
 
 const isWeb = $derived(appContextStore.appContext === "web");
 const isMiniapp = $derived(appContextStore.appContext === "miniapp");
+const showDesktopLayout = $derived(isWeb && !isMobile);
 </script>
 
 <ModeWatcher />
 
-{#if isWeb}
+{#if showDesktopLayout}
   <div class="web-layout-grid">
     <aside class="web-sidebar-container">
       <WebSidebar />
