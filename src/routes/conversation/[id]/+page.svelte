@@ -28,6 +28,20 @@ let passedCommentIds: string[] = [];
 let allDone = false;
 let newCommentText = "";
 
+// Function to get image url based on discussion ID
+function getImageUrl(id: string): string {
+  const images = [
+    "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=300&h=300&q=80", // Web3
+    "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?w=300&h=300&q=80", // AI
+    "https://images.unsplash.com/photo-1501127122-f385ca6ddd9d?w=300&h=300&q=80", // Governance
+    "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=300&h=300&q=80", // Memes
+    "https://images.unsplash.com/photo-1566837945700-30057527ade0?w=300&h=300&q=80", // ZK
+  ];
+
+  const index = Number.parseInt(id, 10) - 1;
+  return images[index % images.length];
+}
+
 // Function to handle user reactions
 function handleReaction(
   commentId: string,
@@ -127,20 +141,31 @@ function goToExplore() {
         ← Back to Explore
       </button>
     </div>
-    
+
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
-      <div class="mb-2 text-sm text-muted-foreground">
-        By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
+      <div class="flex flex-col sm:flex-row sm:items-center mb-4">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mb-4 sm:mb-0 sm:mr-4">
+          <img
+            src={getImageUrl(conversation.id)}
+            alt={conversation.title}
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
+          <div class="mb-2 text-sm text-muted-foreground">
+            By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
+          </div>
+          <p class="text-lg">{conversation.description}</p>
+        </div>
       </div>
-      <p class="text-lg mb-4">{conversation.description}</p>
     </div>
-    
+
     <!-- Vote on Comments Section -->
     <div class="mb-8">
       <h2 class="text-2xl font-semibold mb-4">Vote on Comments</h2>
       <Separator class="mb-6" />
-      
+
       {#if conversation.comments.length === 0}
         <p class="text-center text-muted-foreground py-8">No comments yet. Add the first comment below!</p>
       {:else if allDone}
@@ -148,7 +173,7 @@ function goToExplore() {
         <div class="min-h-[400px] flex flex-col items-center justify-center text-center">
           <h3 class="text-xl font-medium mb-2">All Done!</h3>
           <p class="text-muted-foreground mb-4">You've voted on all the comments in this conversation.</p>
-          <button 
+          <button
             class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
             on:click={resetVoting}
           >
@@ -167,7 +192,7 @@ function goToExplore() {
               Comment {activeIndex + 1} of {conversation.comments.length}:
             </div>
           {/if}
-          
+
           <!-- Fixed height container for card -->
           <div class="flex-grow flex flex-col mb-4">
             <!-- Current comment card -->
@@ -187,22 +212,22 @@ function goToExplore() {
                 </CardContent>
                 <CardFooter class="flex justify-center">
                   <div class="flex gap-2 w-full max-w-md justify-center">
-                    <button 
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 flex-1 bg-green-600 text-white hover:bg-green-700"
+                    <button
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-green-600 text-white hover:bg-green-700"
                       on:click={() => handleReaction(currentComment?.id || '', 'agree')}
                     >
                       Agree
                     </button>
-                    
-                    <button 
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+
+                    <button
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       on:click={() => handleReaction(currentComment?.id || '', 'disagree')}
                     >
                       Disagree
                     </button>
-                    
-                    <button 
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 flex-1 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+
+                    <button
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
                       on:click={() => handleReaction(currentComment?.id || '', 'pass')}
                     >
                       Skip
@@ -212,7 +237,7 @@ function goToExplore() {
               </Card>
             {/if}
           </div>
-          
+
           <!-- Progress bar -->
           <div class="w-full bg-muted rounded-full h-2.5 mb-2">
             {#if reviewingPassed}
@@ -221,7 +246,7 @@ function goToExplore() {
               <div class="bg-primary h-2.5 rounded-full" style="width: {(activeIndex / conversation.comments.length) * 100}%"></div>
             {/if}
           </div>
-          
+
           <!-- Progress stats -->
           <div class="flex justify-between text-sm text-muted-foreground">
             <span>
@@ -236,22 +261,22 @@ function goToExplore() {
         </div>
       {/if}
     </div>
-    
+
     <!-- Add Comments Section -->
     <div class="mb-4">
       <h2 class="text-2xl font-semibold mb-4">Add Comment</h2>
       <Separator class="mb-6" />
-      
+
       <Card class="shadow-sm">
         <CardContent class="pt-6">
           <div class="space-y-4">
-            <Textarea 
-              bind:value={newCommentText} 
-              placeholder="Share your thoughts on this topic..." 
-              class="min-h-[120px]" 
+            <Textarea
+              bind:value={newCommentText}
+              placeholder="Share your thoughts on this topic..."
+              class="min-h-[120px]"
             />
             <div class="flex justify-end">
-              <button 
+              <button
                 class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                 on:click={submitComment}
                 disabled={!newCommentText.trim()}
@@ -267,7 +292,7 @@ function goToExplore() {
 {:else}
   <div class="w-full py-6 text-center">
     <p class="text-xl mb-4">Conversation not found</p>
-    <button 
+    <button
       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       on:click={goToExplore}
     >

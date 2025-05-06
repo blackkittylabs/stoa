@@ -16,12 +16,26 @@ import { goto } from "$app/navigation";
 function navigateToConversation(id: string) {
   goto(`/conversation/${id}`);
 }
+
+// Get image url based on discussion ID
+function getImageUrl(id: string): string {
+  const images = [
+    "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=300&h=300&q=80", // Web3
+    "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?w=300&h=300&q=80", // AI
+    "https://images.unsplash.com/photo-1501127122-f385ca6ddd9d?w=300&h=300&q=80", // Governance
+    "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=300&h=300&q=80", // Memes
+    "https://images.unsplash.com/photo-1566837945700-30057527ade0?w=300&h=300&q=80", // ZK
+  ];
+
+  const index = Number.parseInt(id, 10) - 1;
+  return images[index % images.length];
+}
 </script>
 
-<div class="w-full py-6">
+<div class="w-full py-6 max-w-3xl mx-auto px-4">
   <h1 class="text-3xl font-bold mb-6">Explore Conversations</h1>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="space-y-4">
     {#each MOCK_DISCUSSIONS as discussion}
       <div
         class="cursor-pointer"
@@ -30,18 +44,27 @@ function navigateToConversation(id: string) {
         role="button"
         tabindex="0"
       >
-        <Card class="h-full hover:shadow-md transition-shadow duration-200">
-          <CardHeader>
-            <CardTitle class="text-xl">{discussion.title}</CardTitle>
-            <CardDescription>By {discussion.author}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p class="line-clamp-3">{discussion.description}</p>
-          </CardContent>
-          <CardFooter class="flex justify-between text-sm text-muted-foreground">
-            <div>{discussion.comments.length} comments</div>
-            <div>Updated {getRelativeTime(discussion.updatedAt)}</div>
-          </CardFooter>
+        <Card class="overflow-hidden">
+          <div class="flex items-center p-4">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mr-4">
+              <img
+                src={getImageUrl(discussion.id)}
+                alt={discussion.title}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1 h-24 sm:h-28 flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
+                <p class="text-sm text-muted-foreground">By {discussion.author}</p>
+                <p class="text-sm mt-2 line-clamp-2">{discussion.description}</p>
+              </div>
+              <div class="flex justify-between text-xs sm:text-sm text-muted-foreground">
+                <div>{discussion.comments.length} comments</div>
+                <div>Updated {getRelativeTime(discussion.updatedAt)}</div>
+              </div>
+            </div>
+          </div>
         </Card>
       </div>
     {/each}
