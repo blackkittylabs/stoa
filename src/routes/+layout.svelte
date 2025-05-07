@@ -76,7 +76,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
         <Navbar />
       </div>
       {#if isMiniapp}
-        <div class="h-6"></div> <!-- Extra space for miniapp mode -->
+        <div class="h-8"></div> <!-- Extra space for miniapp mode on iOS -->
       {/if}
     </nav>
   </div>
