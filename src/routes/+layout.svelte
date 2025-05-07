@@ -3,11 +3,11 @@ import "../app.css";
 import { ModeWatcher } from "mode-watcher";
 import Navbar from "../components/Navbar.svelte";
 import WebFooter from "../components/WebFooter.svelte";
+import NavLinks from "../components/NavLinks.svelte";
 import { onMount } from "svelte";
 import { sdk } from "@farcaster/frame-sdk";
 import { appContextStore } from "$stores/appContext.svelte";
 import { page } from "$app/state";
-import { Sparkles, Telescope, Settings } from "@lucide/svelte";
 
 const { children } = $props();
 let isMobile = $state(false);
@@ -54,18 +54,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
     <header class="modern-header">
       <div class="container">
         <nav class="modern-nav">
-          <a href="/create" class="nav-link {page.url.pathname === '/create' ? 'active' : ''}">
-            <Sparkles size={18} />
-            <span>Create</span>
-          </a>
-          <a href="/explore" class="nav-link {page.url.pathname === '/explore' ? 'active' : ''}">
-            <Telescope size={18} />
-            <span>Explore</span>
-          </a>
-          <a href="/settings" class="nav-link {page.url.pathname === '/settings' ? 'active' : ''}">
-            <Settings size={18} />
-            <span>Settings</span>
-          </a>
+          <NavLinks isMiniApp={false} />
         </nav>
       </div>
     </header>
@@ -88,7 +77,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
       </main>
     </div>
     <nav class="sticky bottom-0 left-0 right-0 border-t bg-background z-10">
-      <div class="container mx-auto px-4 max-w-4xl">
+      <div class="container mx-auto max-w-4xl">
         <Navbar />
       </div>
       <div class="h-8"></div> <!-- Extra space for miniapp mode on iOS -->
@@ -130,30 +119,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
 
   .modern-nav {
     display: flex;
-    gap: 2rem;
     justify-content: center;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: hsl(var(--muted-foreground));
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.375rem;
-    transition: all 0.2s ease;
-  }
-
-  .nav-link:hover {
-    color: hsl(var(--foreground));
-    background-color: hsl(var(--muted) / 0.3);
-  }
-
-  .nav-link.active {
-    color: hsl(var(--primary));
-    background-color: hsl(var(--primary) / 0.1);
   }
 
   .modern-main {
@@ -174,15 +140,6 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
 
     .container {
       padding: 0 1rem;
-    }
-
-    .modern-nav {
-      gap: 0.75rem;
-    }
-
-    .nav-link {
-      padding: 0.4rem 0.5rem;
-      font-size: 0.9rem;
     }
 
     .modern-main {
