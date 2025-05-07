@@ -1,0 +1,19 @@
+{
+  "frame": {
+    "version": "1",
+    "name": "Stoa",
+    "iconUrl": "https://stoa.pages.dev/favicon.png",
+    "splashImageUrl": "https://stoa.pages.dev/favicon.png",
+    "splashBackgroundColor": "#f1e1c7",
+    "homeUrl": "https://stoa.pages.dev",
+    "subtitle": "Join the conversation",
+    "description": "A factory for community sentiment.",
+    "primaryCategory": "social",
+    "tags": ["polis", "governance", "ethereum"],
+    "heroImageUrl": "https://stoa.pages.dev/cover.png",
+    "tagline": "Join the conversation",
+    "ogTitle": "Stoa",
+    "ogDescription": "A factory for community sentiment.",
+    "ogImageUrl": "https://stoa.pages.dev/cover.png"
+  }
+}

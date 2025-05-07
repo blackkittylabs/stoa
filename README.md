@@ -19,3 +19,9 @@ Here is the tech we use and their docs:
 We use shadcn-svelte, and all components are already installed:
 - View list of components: `ls ./src/lib/components/ui`
 - View docs for a components: navigate to `https://next.shadcn-svelte.com/docs/components/{componentName}`, for example, `https://next.shadcn-svelte.com/docs/components/accordion`
+
+## Checklist
+- [w] miniapp
+- [ ] wallet
+- [ ] tauri
+- [ ] database
