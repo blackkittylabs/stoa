@@ -33,7 +33,7 @@ function getImageUrl(id: string): string {
 </script>
 
 <div class="w-full py-6">
-  <h1 class="text-3xl font-bold mb-6">Explore Conversations</h1>
+  <h1 class="text-3xl font-bold mb-6">Explore conversations</h1>
 
   <div class="space-y-4">
     {#each MOCK_DISCUSSIONS as discussion}
@@ -46,7 +46,7 @@ function getImageUrl(id: string): string {
       >
         <Card class="overflow-hidden">
           <div class="flex p-4">
-            <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mr-4">
+            <div class="self-center w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mr-4">
               <img
                 src={getImageUrl(discussion.id)}
                 alt={discussion.title}

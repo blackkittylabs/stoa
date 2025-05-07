@@ -21,7 +21,7 @@ We use shadcn-svelte, and all components are already installed:
 - View docs for a components: navigate to `https://next.shadcn-svelte.com/docs/components/{componentName}`, for example, `https://next.shadcn-svelte.com/docs/components/accordion`
 
 ## Checklist
-- [w] miniapp
+- [x] miniapp
 - [ ] wallet
 - [ ] tauri
 - [ ] database
