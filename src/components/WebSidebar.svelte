@@ -122,8 +122,8 @@ const settingsTooltip = $derived.by(() => {
   }
 
   :global(.web-sidebar) {
-    min-width: 240px;
-    width: 240px;
-    max-width: 240px;
+    min-width: 260px;
+    width: 260px;
+    max-width: 260px;
   }
 </style>

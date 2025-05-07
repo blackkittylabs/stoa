@@ -2,11 +2,12 @@
 import "../app.css";
 import { ModeWatcher } from "mode-watcher";
 import Navbar from "../components/Navbar.svelte";
-import WebSidebar from "../components/WebSidebar.svelte";
 import WebFooter from "../components/WebFooter.svelte";
 import { onMount } from "svelte";
 import { sdk } from "@farcaster/frame-sdk";
 import { appContextStore } from "$stores/appContext.svelte";
+import { page } from "$app/state";
+import { Sparkles, Telescope, Settings } from "@lucide/svelte";
 
 const { children } = $props();
 let isMobile = $state(false);
@@ -47,21 +48,36 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
 
 <ModeWatcher />
 
-{#if showDesktopLayout}
-  <div class="web-layout-grid">
-    <aside class="web-sidebar-container">
-      <WebSidebar />
-    </aside>
-    <div class="web-content-container">
-      <main class="web-main-content">
-        <div class="content-container max-w-4xl w-full">
-          {@render children()}
-        </div>
-      </main>
-      <WebFooter />
-    </div>
+{#if !isMiniapp}
+  <!-- Desktop browser and mobile browser (non-miniapp) -->
+  <div class="modern-layout">
+    <header class="modern-header">
+      <div class="container">
+        <nav class="modern-nav">
+          <a href="/create" class="nav-link {page.url.pathname === '/create' ? 'active' : ''}">
+            <Sparkles size={18} />
+            <span>Create</span>
+          </a>
+          <a href="/explore" class="nav-link {page.url.pathname === '/explore' ? 'active' : ''}">
+            <Telescope size={18} />
+            <span>Explore</span>
+          </a>
+          <a href="/settings" class="nav-link {page.url.pathname === '/settings' ? 'active' : ''}">
+            <Settings size={18} />
+            <span>Settings</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+    <main class="modern-main">
+      <div class="container content-area">
+        {@render children()}
+      </div>
+    </main>
+    <WebFooter />
   </div>
 {:else}
+  <!-- Miniapp layout -->
   <div class="flex flex-col h-screen">
     <div class="flex-1 overflow-hidden">
       <main class="h-full overflow-y-auto pb-20">
@@ -75,9 +91,7 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
       <div class="container mx-auto px-4 max-w-4xl">
         <Navbar />
       </div>
-      {#if isMiniapp}
-        <div class="h-8"></div> <!-- Extra space for miniapp mode on iOS -->
-      {/if}
+      <div class="h-8"></div> <!-- Extra space for miniapp mode on iOS -->
     </nav>
   </div>
 {/if}
@@ -90,37 +104,89 @@ const showDesktopLayout = $derived(isWeb && !isMobile);
     overflow: hidden;
   }
 
-  .web-layout-grid {
-    display: grid;
-    grid-template-columns: 240px 1fr;
+  .modern-layout {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     width: 100%;
     overflow: hidden;
   }
 
-  .web-sidebar-container {
-    position: fixed;
+  .modern-header {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    position: sticky;
     top: 0;
-    left: 0;
-    bottom: 0;
-    width: 240px;
     z-index: 10;
   }
 
-  .web-content-container {
-    grid-column: 2;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  .container {
+    max-width: 800px;
     width: 100%;
-    overflow: hidden;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  .web-main-content {
+  .modern-nav {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: hsl(var(--muted-foreground));
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--muted) / 0.3);
+  }
+
+  .nav-link.active {
+    color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.1);
+  }
+
+  .modern-main {
     flex: 1;
     overflow-y: auto;
-    padding: 1.5rem;
-    display: flex;
-    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  .content-area {
+    min-height: 100%;
+  }
+
+  /* Responsive adjustments for mobile browser */
+  @media (max-width: 767px) {
+    .modern-header {
+      padding: 0.5rem 0;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .modern-nav {
+      gap: 0.75rem;
+    }
+
+    .nav-link {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .modern-main {
+      padding: 1.5rem 0;
+    }
   }
 </style>
