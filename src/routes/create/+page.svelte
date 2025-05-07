@@ -9,30 +9,6 @@ import {
   CardTitle,
 } from "$lib/components/ui/card";
 
-// Define a type-safe action for handling events
-function useAction(node: HTMLElement, handler: () => void) {
-  const handleClick = () => handler();
-  node.addEventListener("click", handleClick);
-
-  return {
-    destroy() {
-      node.removeEventListener("click", handleClick);
-    },
-  };
-}
-
-// Define a type-safe action for handling keyboard events
-function useKeyAction(node: HTMLElement, handler: (e: KeyboardEvent) => void) {
-  const handleKeydown = (e: KeyboardEvent) => handler(e);
-  node.addEventListener("keydown", handleKeydown);
-
-  return {
-    destroy() {
-      node.removeEventListener("keydown", handleKeydown);
-    },
-  };
-}
-
 // State for the conversation
 let title = "";
 let description = "";
@@ -79,70 +55,73 @@ function handleSubmit(): void {
 <div class="w-full py-6">
   <h1 class="text-3xl font-bold mb-6">Start a conversation</h1>
 
-  <Card class="mb-8">
-    <CardContent>
-      <div class="space-y-4">
-        <div class="space-y-2">
-          <label for="title" class="text-sm font-medium">Title</label>
-          <Input id="title" bind:value={title} placeholder="Title" />
-        </div>
+  <form on:submit|preventDefault={handleSubmit}>
+    <Card class="mb-8">
+      <CardContent>
+        <div class="space-y-6">
+          <!-- Conversation details section -->
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label for="title" class="text-sm font-medium">Title</label>
+              <Input id="title" bind:value={title} placeholder="Enter conversation title" />
+            </div>
 
-        <div class="space-y-2">
-          <label for="description" class="text-sm font-medium">Description</label>
-          <Textarea
-            id="description"
-            bind:value={description}
-            placeholder="Description"
-            rows={3}
-          />
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-
-  <Card class="mb-8">
-    <CardHeader>
-      <CardTitle>Initial comments</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div class="space-y-4">
-        <div class="flex space-x-2">
-          <div class="flex-1">
-            <span use:useKeyAction={handleKeyDown}>
-              <Input
-                bind:value={currentSeedComment}
-                placeholder="New comment"
+            <div class="space-y-2">
+              <label for="description" class="text-sm font-medium">Description</label>
+              <Textarea
+                id="description"
+                bind:value={description}
+                placeholder="What is this conversation about?"
+                rows={3}
               />
-            </span>
+            </div>
           </div>
-          <span use:useAction={addComment}>
-            <Button>Add</Button>
-          </span>
-        </div>
 
-        {#if seedComments.length > 0}
-          <div class="border rounded-md divide-y mt-4">
-            {#each seedComments as comment, index}
-              <div class="p-3 flex justify-between items-center">
-                <p class="mr-2">{comment}</p>
-                <span use:useAction={() => removeComment(index)}>
-                  <Button variant="destructive" size="sm">
-                    Remove
-                  </Button>
-                </span>
+          <!-- Seed comments section -->
+          <div class="pt-4 border-t space-y-4">
+            <h3 class="text-sm font-medium">Initial comments</h3>
+
+            <form class="flex space-x-2" on:submit|preventDefault={addComment}>
+              <div class="flex-1">
+                <Input
+                  bind:value={currentSeedComment}
+                  placeholder="Add a comment"
+                />
               </div>
-            {/each}
-          </div>
-        {/if}
-      </div>
-    </CardContent>
-  </Card>
+              <Button type="submit" variant="secondary" size="default">
+                Add
+              </Button>
+            </form>
 
-  <div class="flex justify-center">
-    <span use:useAction={handleSubmit}>
-      <Button disabled={!title || !description || seedComments.length === 0}>
-        Create
-      </Button>
-    </span>
-  </div>
+            {#if seedComments.length > 0}
+              <div class="border rounded-md divide-y mt-4 bg-muted/30">
+                {#each seedComments as comment, index}
+                  <div class="p-3 flex justify-between items-center">
+                    <p class="mr-2">{comment}</p>
+                    <button
+                      type="button"
+                      class="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md px-3 h-9 text-sm"
+                      on:click={() => removeComment(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                {/each}
+              </div>
+            {/if}
+          </div>
+
+          <!-- Form submission -->
+          <div class="flex justify-center pt-4">
+            <Button
+              type="submit"
+              disabled={!title || !description || seedComments.length === 0}
+            >
+              Create
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </form>
 </div>
