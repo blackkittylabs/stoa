@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjIxMTEyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NWY0MTE5NjFlQkNmMmUxNmE2NkRBQWZDQUU2NmJDNmJEYTQzNWRGOSJ9",
+    "payload": "eyJkb21haW4iOiJzdG9hLnBhZ2VzLmRldiJ9",
+    "signature": "MHg3YWQxY2E3NDA2YTcwYzEwYjk5MmMzOTRmOTViOTQzNTc2MGJhMGUyMWI3ZjUyYTBiZmY1YWRlYWQxOWVlYjllNzAwYzdkM2FmMzYyYjFmZmJiMjEwNGVhNDdiNTZhNTMzZjA0MmFlOTBjMjMxZTM4YjZlNTFhM2MzOTdkZjg3NDFi"
+  },
   "frame": {
     "version": "1",
     "name": "Stoa",
