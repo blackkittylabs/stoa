@@ -1,13 +1,14 @@
-<script lang="ts">
-import { Github } from "@lucide/svelte";
-</script>
-
 <footer class="border-t py-3 mt-auto bg-background">
   <div class="footer-container">
-    <a href="https://github.com/blackkittylabs/stoa" class="github-link">
-      <Github size={14} />
-      <span>View on GitHub</span>
-    </a>
+    <div class="footer-links">
+      <a href="https://github.com/blackkittylabs/stoa" class="footer-link">
+        GitHub
+      </a>
+      <div class="separator"></div>
+      <a href="https://warpcast.com/miniapps/18lP8FLTNojm/stoa" class="footer-link">
+        Farcaster Mini App
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -15,7 +16,7 @@ import { Github } from "@lucide/svelte";
   footer {
     padding: 0.75rem 0;
   }
-  
+
   .footer-container {
     max-width: 800px;
     width: 100%;
@@ -24,18 +25,28 @@ import { Github } from "@lucide/svelte";
     display: flex;
     justify-content: center;
   }
-  
-  .github-link {
+
+  .footer-links {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1.5rem;
+  }
+
+  .footer-link {
     font-size: 0.875rem;
+    font-weight: 500;
     color: hsl(var(--muted-foreground));
     text-decoration: none;
     transition: color 0.2s ease;
   }
-  
-  .github-link:hover {
+
+  .footer-link:hover {
     color: hsl(var(--primary));
+  }
+
+  .separator {
+    width: 1px;
+    height: 1rem;
+    background-color: hsl(var(--border));
   }
 </style>
