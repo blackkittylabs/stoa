@@ -1,6 +1,6 @@
 <script lang="ts">
 import { appContextStore } from "$stores/appContext.svelte";
-import { MOCK_DISCUSSIONS, getRelativeTime } from "$stores/mockData";
+import { MOCK_DISCUSSIONS, getRelativeTime, calculateConsensus } from "$stores/mockData";
 import {
   Card,
   CardContent,
@@ -11,6 +11,7 @@ import {
 } from "$lib/components/ui/card";
 import { Button } from "$lib/components/ui/button";
 import { goto } from "$app/navigation";
+import ConsensusMeter from "$lib/components/ConsensusMeter.svelte";
 
 // Function to handle card click
 function navigateToConversation(id: string) {
@@ -44,7 +45,7 @@ function getImageUrl(id: string): string {
         role="button"
         tabindex="0"
       >
-        <Card class="overflow-hidden">
+        <Card class="overflow-hidden hover:shadow-md transition-shadow duration-200">
           <div class="flex p-4">
             <div class="self-center w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mr-4">
               <img
@@ -54,14 +55,24 @@ function getImageUrl(id: string): string {
               />
             </div>
             <div class="flex-1 flex flex-col justify-between">
-              <div class="mb-2">
-                <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
-                <p class="text-sm text-muted-foreground">By {discussion.author}</p>
-                <p class="text-sm mt-2 line-clamp-2">{discussion.description}</p>
+              <div>
+                <div class="flex justify-between items-start gap-3">
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
+                    <p class="text-sm text-muted-foreground">By {discussion.author}</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <ConsensusMeter value={calculateConsensus(discussion)} size={90} showLabel={true} />
+                  </div>
+                </div>
+                <p class="text-sm mt-2 mb-4 line-clamp-2">{discussion.description}</p>
               </div>
-              <div class="flex justify-between text-xs sm:text-sm text-muted-foreground mt-auto">
-                <div>{discussion.comments.length} comments</div>
-                <div>Updated {getRelativeTime(discussion.updatedAt)}</div>
+              <div class="flex text-xs sm:text-sm text-muted-foreground">
+                <div class="flex items-center gap-2">
+                  <div>{discussion.comments.length} comments</div>
+                  <div>•</div>
+                  <div>Updated {getRelativeTime(discussion.updatedAt)}</div>
+                </div>
               </div>
             </div>
           </div>

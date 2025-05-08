@@ -21,6 +21,32 @@ export type Discussion = {
   comments: Comment[];
 };
 
+// Calculate consensus score (0-100) based on agree/disagree reactions
+export function calculateConsensus(discussion: Discussion): number {
+  // For demonstration purposes, return fixed percentages for specific discussions
+  // This ensures we show examples of each color range (red, orange, green)
+  if (discussion.id === "1") return 25; // Red - low consensus example
+  if (discussion.id === "2") return 50; // Orange - medium consensus example
+  if (discussion.id === "3") return 80; // Green - high consensus example
+  
+  // Normal calculation for other discussions
+  if (!discussion.comments.length) return 50; // Neutral if no comments
+  
+  let totalAgree = 0;
+  let totalDisagree = 0;
+  
+  discussion.comments.forEach(comment => {
+    totalAgree += comment.reactions.agree;
+    totalDisagree += comment.reactions.disagree;
+  });
+  
+  const total = totalAgree + totalDisagree;
+  if (total === 0) return 50; // Neutral if no reactions
+  
+  // Calculate percentage of agreement (0-100)
+  return Math.round((totalAgree / total) * 100);
+}
+
 // Helper function to get relative time
 export function getRelativeTime(date: Date): string {
   const now = new Date();
