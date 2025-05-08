@@ -73,8 +73,13 @@ const { isMiniApp = false } = $props();
     }
 
     .nav-link {
-      padding: 0.4rem 0.5rem;
+      padding: 0.6rem 0.7rem;
       font-size: 0.9rem;
     }
+  }
+  
+  /* Additional height for miniapp mode */
+  .nav-container.miniapp .nav-link {
+    padding: 0.7rem 0.7rem;
   }
 </style>
