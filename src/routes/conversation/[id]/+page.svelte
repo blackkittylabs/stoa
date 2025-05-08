@@ -296,24 +296,12 @@ function goToExplore() {
           </div>
 
           <!-- Progress bar -->
-          <div class="w-full bg-muted rounded-full h-2.5 mb-2">
+          <div class="w-full bg-muted rounded-full h-2.5 mb-4">
             {#if reviewingPassed}
               <div class="bg-primary h-2.5 rounded-full" style="width: {(activeIndex / passedCommentIds.length) * 100}%"></div>
             {:else}
               <div class="bg-primary h-2.5 rounded-full" style="width: {(activeIndex / conversation.comments.length) * 100}%"></div>
             {/if}
-          </div>
-
-          <!-- Progress stats -->
-          <div class="flex justify-between text-sm text-muted-foreground">
-            <span>
-              {#if reviewingPassed}
-                Reviewing skipped comments
-              {:else}
-                Initial review
-              {/if}
-            </span>
-            <span>Skipped: {passedCommentIds.length}</span>
           </div>
         </div>
       {/if}
@@ -329,10 +317,10 @@ function goToExplore() {
           <div class="space-y-4">
             <Textarea
               bind:value={newCommentText}
-              placeholder="Share your thoughts on this topic..."
+              placeholder="Share your thoughts on this topic"
               class="min-h-[120px]"
             />
-            <div class="flex justify-end">
+            <div class="flex justify-center">
               <button
                 class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                 on:click={submitComment}
