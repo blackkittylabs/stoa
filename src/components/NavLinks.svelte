@@ -1,19 +1,12 @@
 <script lang="ts">
 import { page } from "$app/state";
-import { Sparkles, Telescope, Settings } from "@lucide/svelte";
+import { Telescope, Settings } from "@lucide/svelte";
 
 // Export props with default values
 const { isMiniApp = false } = $props();
 </script>
 
 <div class="nav-container {isMiniApp ? 'miniapp' : ''}">
-  <a
-    href="/create"
-    class="nav-link {page.url.pathname === '/create' ? 'active' : ''}"
-  >
-    <Sparkles size={18} />
-    <span>Create</span>
-  </a>
   <a
     href="/explore"
     class="nav-link {page.url.pathname === '/explore' ? 'active' : ''}"
@@ -40,7 +33,8 @@ const { isMiniApp = false } = $props();
   }
   
   .nav-container.miniapp {
-    justify-content: space-between;
+    justify-content: center;
+    gap: 4rem;
     padding: 0 1rem;
   }
   

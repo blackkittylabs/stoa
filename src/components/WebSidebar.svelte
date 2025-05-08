@@ -1,16 +1,10 @@
 <script lang="ts">
 import { page } from "$app/state";
-import { Sparkles, Telescope, Settings } from "@lucide/svelte";
+import { Telescope, Settings } from "@lucide/svelte";
 import * as Sidebar from "$lib/components/ui/sidebar";
 import type { Snippet } from "svelte";
 
 // Define tooltips as Snippets for collapsed state
-const createTooltip = $derived.by(() => {
-  return {
-    render: () => "Create",
-  } as unknown as Snippet;
-});
-
 const exploreTooltip = $derived.by(() => {
   return {
     render: () => "Explore",
@@ -33,18 +27,6 @@ const settingsTooltip = $derived.by(() => {
     </Sidebar.Header>
     <Sidebar.Content class="px-2">
       <Sidebar.Menu>
-        <Sidebar.MenuItem>
-          <a href="/create" class:active={page.url.pathname === "/create"}>
-            <Sidebar.MenuButton 
-              isActive={page.url.pathname === "/create"}
-              tooltipContent={createTooltip}
-              size="lg"
-              class={page.url.pathname === "/create" ? "active-menu-item" : ""}
-            >
-              <Sparkles class="mr-3 size-[18px]" /> <span>Create</span>
-            </Sidebar.MenuButton>
-          </a>
-        </Sidebar.MenuItem>
         <Sidebar.MenuItem>
           <a href="/explore" class:active={page.url.pathname === "/explore"}>
             <Sidebar.MenuButton 
