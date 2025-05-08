@@ -118,7 +118,7 @@ function getImageUrl(id: string): string {
                 {:else}
                   <div>
                     <div class="flex-1 min-w-0">
-                      <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
+                      <h3 class="text-lg sm:text-xl font-semibold">{discussion.title}</h3>
                       <p class="text-sm text-muted-foreground">By {discussion.author}</p>
                     </div>
                   </div>
