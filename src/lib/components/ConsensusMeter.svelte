@@ -1,30 +1,30 @@
 <script lang="ts">
-  export let value: number = 50; // Default to middle (0-100 scale)
-  export let size: number = 120; // Default size in pixels
-  export let showLabel: boolean = true; // Show "Consensus" label
+export let value = 50; // Default to middle (0-100 scale)
+export let size = 120; // Default size in pixels
+export let showLabel = true; // Show "Consensus" label
 
-  // Calculate color based on consensus value
-  $: color = getColorFromValue(value);
-  
-  // Calculate the sweep angle for the arc (0-180 degrees)
-  // For proper filling left-to-right as value increases from left endpoint
-  $: startAngle = 180; // Start from the left side (180 degrees)
-  $: endAngle = 180 - (value / 100) * 180; // Move counterclockwise as value increases
+// Calculate color based on consensus value
+$: color = getColorFromValue(value);
 
-  function getColorFromValue(val: number): string {
-    if (val < 33) return "#ef4444"; // Red for low consensus (<33%)
-    if (val < 66) return "#f97316"; // Orange for medium consensus (33-66%)
-    return "#22c55e"; // Green for high consensus (>66%)
-  }
+// Calculate the sweep angle for the arc (0-180 degrees)
+// For proper filling left-to-right as value increases from left endpoint
+$: startAngle = 180; // Start from the left side (180 degrees)
+$: endAngle = 180 - (value / 100) * 180; // Move counterclockwise as value increases
 
-  // Calculate viewBox dimensions
-  $: halfSize = size / 2;
-  $: radius = halfSize * 0.7; // Arc radius as percentage of half size
-  $: arcWidth = radius * 0.15; // Width of the arc
-  
-  // Properly sized viewBox to ensure everything fits
-  // Make it more compact since we're nesting the text closer to the arc
-  $: viewBoxHeight = size * 0.75;
+function getColorFromValue(val: number): string {
+  if (val < 33) return "#ef4444"; // Red for low consensus (<33%)
+  if (val < 66) return "#f97316"; // Orange for medium consensus (33-66%)
+  return "#22c55e"; // Green for high consensus (>66%)
+}
+
+// Calculate viewBox dimensions
+$: halfSize = size / 2;
+$: radius = halfSize * 0.7; // Arc radius as percentage of half size
+$: arcWidth = radius * 0.15; // Width of the arc
+
+// Properly sized viewBox to ensure everything fits
+// Make it more compact since we're nesting the text closer to the arc
+$: viewBoxHeight = size * 0.75;
 </script>
 
 <div class="consensus-meter" style:width="{size}px" style:height="{viewBoxHeight}px">

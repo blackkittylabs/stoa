@@ -3,6 +3,7 @@ import { page } from "$app/stores";
 import {
   MOCK_DISCUSSIONS,
   getRelativeTime,
+  calculateConsensus,
   type Comment,
 } from "$stores/mockData";
 import {
@@ -17,9 +18,32 @@ import { goto } from "$app/navigation";
 import { Separator } from "$lib/components/ui/separator";
 import { Textarea } from "$lib/components/ui/textarea";
 import { writable } from "svelte/store";
+import ConsensusMeter from "$lib/components/ConsensusMeter.svelte";
+import { browser } from "$app/environment";
+import { onMount } from "svelte";
 
 const conversationId = $page.params.id;
 const conversation = MOCK_DISCUSSIONS.find((d) => d.id === conversationId);
+
+// Create a store for mobile detection
+const isMobile = writable(false);
+
+// Update the store based on window size
+function updateMobileStatus() {
+  if (browser) {
+    isMobile.set(window.innerWidth < 768);
+  }
+}
+
+// Set up window resize listener
+onMount(() => {
+  updateMobileStatus();
+
+  if (browser) {
+    window.addEventListener("resize", updateMobileStatus);
+    return () => window.removeEventListener("resize", updateMobileStatus);
+  }
+});
 
 // State for voting system
 let activeIndex = 0;
@@ -143,22 +167,55 @@ function goToExplore() {
     </div>
 
     <div class="mb-8">
-      <div class="flex flex-col sm:flex-row sm:items-center mb-4">
-        <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mb-4 sm:mb-0 sm:mr-4">
-          <img
-            src={getImageUrl(conversation.id)}
-            alt={conversation.title}
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div>
-          <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
-          <div class="mb-2 text-sm text-muted-foreground">
-            By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
+      <!-- Mobile version -->
+      {#if $isMobile}
+        <div class="flex flex-col mb-6">
+          <div class="flex items-center mb-4">
+            <div class="w-24 h-24 flex-shrink-0 rounded overflow-hidden mr-4">
+              <img
+                src={getImageUrl(conversation.id)}
+                alt={conversation.title}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-shrink-0">
+              <ConsensusMeter value={calculateConsensus(conversation)} size={90} showLabel={true} />
+            </div>
           </div>
-          <p class="text-lg">{conversation.description}</p>
+          <div>
+            <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
+            <div class="mb-2 text-sm text-muted-foreground">
+              By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
+            </div>
+            <p class="text-lg">{conversation.description}</p>
+          </div>
         </div>
-      </div>
+      <!-- Desktop version -->
+      {:else}
+        <div class="flex items-start mb-4">
+          <div class="w-28 h-28 flex-shrink-0 rounded overflow-hidden mr-4">
+            <img
+              src={getImageUrl(conversation.id)}
+              alt={conversation.title}
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="flex-grow">
+            <div class="flex justify-between items-start">
+              <div class="flex-grow mr-6">
+                <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
+                <div class="mb-2 text-sm text-muted-foreground">
+                  By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
+                </div>
+              </div>
+              <div class="flex-shrink-0">
+                <ConsensusMeter value={calculateConsensus(conversation)} size={100} showLabel={true} />
+              </div>
+            </div>
+            <p class="text-lg pr-28">{conversation.description}</p>
+          </div>
+        </div>
+      {/if}
     </div>
 
     <!-- Vote on Comments Section -->
