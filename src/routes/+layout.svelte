@@ -44,7 +44,22 @@ onMount(() => {
 const isWeb = $derived(appContextStore.appContext === "web");
 const isMiniapp = $derived(appContextStore.appContext === "miniapp");
 const showDesktopLayout = $derived(isWeb && !isMobile);
+
+// Elegant and efficient page title generator
+function getPageTitle(path: string): string {
+  const pageName = path.split("/")[1];
+
+  if (!pageName) return "Stoa";
+
+  // Capitalize first letter of the page name
+  const capitalizedName = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+  return `Stoa | ${capitalizedName}`;
+}
 </script>
+
+<svelte:head>
+  <title>{getPageTitle(page.url.pathname)}</title>
+</svelte:head>
 
 <ModeWatcher />
 
