@@ -194,7 +194,7 @@ function getImageUrl(id: string): string {
                       <p class="text-sm text-muted-foreground">By {discussion.author}</p>
                     </div>
                     <div class="flex-shrink-0">
-                      <ConsensusMeter value={calculateConsensus(discussion)} size={70} showLabel={true} />
+                      <ConsensusMeter value={calculateConsensus(discussion)} size={90} showLabel={true} />
                     </div>
                   </div>
                 <!-- Mobile version - just the title -->

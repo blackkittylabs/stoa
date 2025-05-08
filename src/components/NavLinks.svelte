@@ -34,7 +34,7 @@ const { isMiniApp = false } = $props();
   
   .nav-container.miniapp {
     justify-content: center;
-    gap: 4rem;
+    gap: 2.5rem;
     padding: 0 1rem;
   }
   
@@ -72,8 +72,8 @@ const { isMiniApp = false } = $props();
     }
   }
   
-  /* Additional height for miniapp mode */
+  /* Enhanced tap target for miniapp mode */
   .nav-container.miniapp .nav-link {
-    padding: 0.7rem 0.7rem;
+    padding: 0.8rem 1rem;
   }
 </style>
