@@ -28,13 +28,16 @@ import * as Dialog from "$lib/components/ui/dialog";
 const isMobile = writable(false);
 
 // State for dialog
-let dialogOpen = false;
+let dialogOpen = $state(false);
 
 // State for the conversation form
-let title = "";
-let description = "";
-let currentSeedComment = "";
-let seedComments: string[] = [];
+let title = $state("");
+let description = $state("");
+let currentSeedComment = $state("");
+let seedComments = $state<string[]>([]);
+
+// Check if we're in miniapp mode
+const isMiniapp = $derived(appContextStore.appContext === "miniapp");
 
 // Create a custom Button event handler function
 function createButtonHandler(fn: () => void) {
@@ -130,19 +133,16 @@ function getImageUrl(id: string): string {
 }
 </script>
 
-<div class="w-full py-6 relative">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Explore conversations</h1>
-    
-    <!-- Desktop create button -->
-    {#if !$isMobile}
-      <button 
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" 
-        on:click={() => dialogOpen = true}
+<div class="w-full pt-2 pb-6 relative">
+  <div class="flex justify-center mb-5">
+    <!-- Top create button (for desktop and mobile web, but not miniapp) -->
+    {#if !isMiniapp}
+      <Button
+        onclick={() => dialogOpen = true}
       >
-        <Plus size={18} class="mr-2" />
+        <Plus />
         Start a conversation
-      </button>
+      </Button>
     {/if}
   </div>
 
@@ -150,8 +150,8 @@ function getImageUrl(id: string): string {
     {#each MOCK_DISCUSSIONS as discussion}
       <div
         class="cursor-pointer"
-        on:click={() => navigateToConversation(discussion.id)}
-        on:keydown={(e) => e.key === 'Enter' && navigateToConversation(discussion.id)}
+        onclick={() => navigateToConversation(discussion.id)}
+        onkeydown={(e) => e.key === 'Enter' && navigateToConversation(discussion.id)}
         role="button"
         tabindex="0"
       >
@@ -183,7 +183,7 @@ function getImageUrl(id: string): string {
                 </div>
               </div>
             {/if}
-            
+
             <div class="flex-1 flex flex-col justify-between">
               <div>
                 <!-- Desktop version - title with consensus meter on right -->
@@ -221,12 +221,12 @@ function getImageUrl(id: string): string {
       </div>
     {/each}
   </div>
-  
-  <!-- Mobile floating action button -->
-  {#if $isMobile}
-    <button 
+
+  <!-- Floating action button (only for miniapp) -->
+  {#if isMiniapp}
+    <button
       class="fixed bottom-24 right-4 shadow-lg rounded-full w-14 h-14 z-50 bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-      on:click={() => dialogOpen = true}
+      onclick={() => dialogOpen = true}
     >
       <Plus size={24} />
     </button>
@@ -242,18 +242,18 @@ function getImageUrl(id: string): string {
         Create a new conversation to discuss with the community.
       </Dialog.Description>
     </Dialog.Header>
-    
-    <form on:submit|preventDefault={handleSubmit}>
+
+    <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
       <div class="space-y-6 py-4">
         <!-- Conversation details section -->
         <div class="space-y-4">
           <div class="space-y-2">
             <label for="title" class="text-sm font-medium">Title</label>
-            <input 
-              id="title" 
+            <input
+              id="title"
               class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              bind:value={title} 
-              placeholder="Enter conversation title" 
+              bind:value={title}
+              placeholder="Enter conversation title"
             />
           </div>
 
@@ -278,12 +278,12 @@ function getImageUrl(id: string): string {
               class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               bind:value={currentSeedComment}
               placeholder="Add a comment"
-              on:keydown={handleKeyDown}
+              onkeydown={handleKeyDown}
             />
-            <button 
-              type="button" 
+            <button
+              type="button"
               class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
-              on:click={addComment}
+              onclick={addComment}
             >
               Add
             </button>
@@ -297,7 +297,7 @@ function getImageUrl(id: string): string {
                   <button
                     type="button"
                     class="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md px-3 h-9 text-sm"
-                    on:click={() => removeComment(index)}
+                    onclick={() => removeComment(index)}
                   >
                     Remove
                   </button>
@@ -309,15 +309,15 @@ function getImageUrl(id: string): string {
       </div>
 
       <Dialog.Footer class={$isMobile ? "flex-col space-y-2" : ""}>
-        <button 
-          type="button" 
+        <button
+          type="button"
           class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-input bg-background hover:bg-accent hover:text-accent-foreground border h-10 px-4 py-2"
-          on:click={() => dialogOpen = false}
+          onclick={() => dialogOpen = false}
         >
           Cancel
         </button>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           disabled={!title || !description || seedComments.length === 0}
         >

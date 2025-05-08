@@ -24,23 +24,37 @@ $: startAngle = Math.PI; // Start from left (180 degrees)
 $: endAngle = Math.PI + (value / 100) * Math.PI; // Clockwise movement based on value
 
 // Create SVG arc path for filled segments
-function describeArc(x: number, y: number, innerRadius: number, outerRadius: number, 
-                     startAngle: number, endAngle: number): string {
+function describeArc(
+  x: number,
+  y: number,
+  innerRadius: number,
+  outerRadius: number,
+  startAngle: number,
+  endAngle: number,
+): string {
   // Convert to Cartesian coordinates (precise to 2 decimal places for crispness)
-  const startOuterX = Math.round((x + outerRadius * Math.cos(startAngle)) * 100) / 100;
-  const startOuterY = Math.round((y + outerRadius * Math.sin(startAngle)) * 100) / 100;
-  const endOuterX = Math.round((x + outerRadius * Math.cos(endAngle)) * 100) / 100;
-  const endOuterY = Math.round((y + outerRadius * Math.sin(endAngle)) * 100) / 100;
-  
-  const startInnerX = Math.round((x + innerRadius * Math.cos(endAngle)) * 100) / 100;
-  const startInnerY = Math.round((y + innerRadius * Math.sin(endAngle)) * 100) / 100;
-  const endInnerX = Math.round((x + innerRadius * Math.cos(startAngle)) * 100) / 100;
-  const endInnerY = Math.round((y + innerRadius * Math.sin(startAngle)) * 100) / 100;
-  
+  const startOuterX =
+    Math.round((x + outerRadius * Math.cos(startAngle)) * 100) / 100;
+  const startOuterY =
+    Math.round((y + outerRadius * Math.sin(startAngle)) * 100) / 100;
+  const endOuterX =
+    Math.round((x + outerRadius * Math.cos(endAngle)) * 100) / 100;
+  const endOuterY =
+    Math.round((y + outerRadius * Math.sin(endAngle)) * 100) / 100;
+
+  const startInnerX =
+    Math.round((x + innerRadius * Math.cos(endAngle)) * 100) / 100;
+  const startInnerY =
+    Math.round((y + innerRadius * Math.sin(endAngle)) * 100) / 100;
+  const endInnerX =
+    Math.round((x + innerRadius * Math.cos(startAngle)) * 100) / 100;
+  const endInnerY =
+    Math.round((y + innerRadius * Math.sin(startAngle)) * 100) / 100;
+
   // Create the arc path - outer arc, line to inner radius, inner arc, close path
   const largeArcFlag = Math.abs(startAngle - endAngle) > Math.PI ? 1 : 0;
   const sweepFlag = endAngle > startAngle ? 1 : 0; // 1 for clockwise
-  
+
   return [
     // Start at outer start point
     `M ${startOuterX},${startOuterY}`,
@@ -49,15 +63,32 @@ function describeArc(x: number, y: number, innerRadius: number, outerRadius: num
     // Line to inner arc end point
     `L ${startInnerX},${startInnerY}`,
     // Draw inner arc back to start (counterclockwise sweep)
-    `A ${innerRadius},${innerRadius} 0 ${largeArcFlag} ${1-sweepFlag} ${endInnerX},${endInnerY}`,
+    `A ${innerRadius},${innerRadius} 0 ${largeArcFlag} ${1 - sweepFlag} ${endInnerX},${endInnerY}`,
     // Close the path
-    'Z'
-  ].join(' ');
+    "Z",
+  ].join(" ");
 }
 
 // Generate SVG paths
-$: bgPath = describeArc(halfSize, halfSize, innerRadius, outerRadius, startAngle, startAngle + Math.PI);
-$: valuePath = value > 0 ? describeArc(halfSize, halfSize, innerRadius, outerRadius, startAngle, endAngle) : '';
+$: bgPath = describeArc(
+  halfSize,
+  halfSize,
+  innerRadius,
+  outerRadius,
+  startAngle,
+  startAngle + Math.PI,
+);
+$: valuePath =
+  value > 0
+    ? describeArc(
+        halfSize,
+        halfSize,
+        innerRadius,
+        outerRadius,
+        startAngle,
+        endAngle,
+      )
+    : "";
 </script>
 
 <div class="consensus-meter" style:width="{size}px" style:height="{viewBoxHeight}px">
