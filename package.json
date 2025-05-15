@@ -42,6 +42,7 @@
     "zod": "^3.24.4"
   },
   "dependencies": {
-    "@farcaster/frame-sdk": "^0.0.37"
+    "@farcaster/frame-sdk": "^0.0.37",
+    "viem": "^2.29.3"
   }
 }
