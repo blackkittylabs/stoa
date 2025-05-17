@@ -23,12 +23,23 @@ import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import { Plus } from "@lucide/svelte";
 import * as Dialog from "$lib/components/ui/dialog";
+import { createPublicClient, createWalletClient, custom, http, parseEther } from "viem";
+import { mainnet } from "viem/chains";
+import { sdk } from "@farcaster/frame-sdk";
 
 // Create a store for mobile detection
 const isMobile = writable(false);
 
 // State for dialog
 let dialogOpen = $state(false);
+
+// State for viem block number and address
+let blockNumber = $state<number>(0);
+let address = $state<string>("");
+let transactionInProgress = $state(false);
+let transactionHash = $state<string | null>(null);
+let transactionError = $state<string | null>(null);
+let ethAmount = $state("0.001");
 
 // State for the conversation form
 let title = $state("");
@@ -105,13 +116,84 @@ function updateMobileStatus() {
 
 // Set up window resize listener
 onMount(() => {
+  // Update mobile status
   updateMobileStatus();
 
+  // Set up event listener
   if (browser) {
     window.addEventListener("resize", updateMobileStatus);
-    return () => window.removeEventListener("resize", updateMobileStatus);
+  }
+
+  // Return cleanup function
+  return () => {
+    if (browser) {
+      window.removeEventListener("resize", updateMobileStatus);
+    }
+  };
+});
+
+// Separate async initialization
+onMount(async () => {
+  if (browser) {
+    // Set up Viem public client
+    const publicClient = createPublicClient({
+      chain: mainnet,
+      transport: http(),
+    });
+
+    // Set up Viem wallet client
+    const walletClient = createWalletClient({
+      chain: mainnet,
+      // @ts-ignore
+      transport: custom(window.ethereum!),
+    });
+
+    // Get current block number directly with await
+    blockNumber = Number(await publicClient.getBlockNumber());
+
+    // Get addresses
+    const addresses = await walletClient.getAddresses();
+    if (addresses.length > 0) {
+      address = addresses[0];
+    }
+    console.log("addresses:", address);
+
+    // Log the Ethereum provider from Farcaster SDK
+    console.log("Farcaster SDK Ethereum Provider:", sdk.wallet.ethProvider);
   }
 });
+
+// Function to send transaction
+async function sendTransaction(): Promise<void> {
+  if (!address || transactionInProgress) return;
+  
+  try {
+    transactionInProgress = true;
+    transactionError = null;
+    transactionHash = null;
+    
+    // Set up wallet client
+    const walletClient = createWalletClient({
+      chain: mainnet,
+      // @ts-ignore
+      transport: custom(window.ethereum!),
+    });
+    
+    // Send transaction
+    const hash = await walletClient.sendTransaction({ 
+      account: address,
+      to: '0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC',
+      value: parseEther(ethAmount)
+    });
+    
+    transactionHash = hash;
+  } catch (error) {
+    console.error("Transaction error:", error);
+    transactionError = error instanceof Error ? error.message : String(error);
+  } finally {
+    transactionInProgress = false;
+  }
+}
 
 // Function to handle card click
 function navigateToConversation(id: string) {
@@ -134,6 +216,55 @@ function getImageUrl(id: string): string {
 </script>
 
 <div class="w-full pt-2 pb-6 relative">
+  <!-- Viem Quick Start Example -->
+  <div class="bg-muted/30 rounded-md p-4 mb-4">
+    <h2 class="text-xl font-bold">Viem Quick Start Example</h2>
+    <p>Current Ethereum Block Number: {blockNumber}</p>
+    <p>Your ETH Address: {address ? address : "Not connected"}</p>
+    
+    {#if address}
+      <div class="mt-4 border-t pt-4">
+        <h3 class="text-lg font-semibold mb-2">Send ETH Transaction</h3>
+        <div class="flex gap-2 items-center mb-3">
+          <Input 
+            type="text"
+            bind:value={ethAmount}
+            placeholder="ETH Amount"
+            class="w-32"
+          />
+          <span>ETH</span>
+          <Button 
+            onclick={sendTransaction}
+            disabled={transactionInProgress || !address}
+            class="ml-2"
+          >
+            {transactionInProgress ? 'Sending...' : 'Send ETH'}
+          </Button>
+        </div>
+        
+        {#if transactionHash}
+          <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded text-green-800 dark:text-green-200 text-sm mt-2">
+            <p>Transaction sent! Hash: {transactionHash}</p>
+            <a 
+              href={`https://etherscan.io/tx/${transactionHash}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="underline text-blue-600 dark:text-blue-400"
+            >
+              View on Etherscan
+            </a>
+          </div>
+        {/if}
+        
+        {#if transactionError}
+          <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded text-red-800 dark:text-red-200 text-sm mt-2">
+            <p>Transaction failed: {transactionError}</p>
+          </div>
+        {/if}
+      </div>
+    {/if}
+  </div>
+
   <div class="flex justify-center mb-5">
     <!-- Top create button (for desktop and mobile web, but not miniapp) -->
     {#if !isMiniapp}
