@@ -23,7 +23,13 @@ import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import { Plus } from "@lucide/svelte";
 import * as Dialog from "$lib/components/ui/dialog";
-import { createPublicClient, createWalletClient, custom, http, parseEther } from "viem";
+import {
+  createPublicClient,
+  createWalletClient,
+  custom,
+  http,
+  parseEther,
+} from "viem";
 import { mainnet } from "viem/chains";
 import { sdk } from "@farcaster/frame-sdk";
 
@@ -35,7 +41,8 @@ let dialogOpen = $state(false);
 
 // State for viem block number and address
 let blockNumber = $state<number>(0);
-let address = $state<string>("");
+// Use 0x-prefixed string type for Ethereum addresses with null for no address
+let address = $state<`0x${string}` | null>(null);
 let transactionInProgress = $state(false);
 let transactionHash = $state<string | null>(null);
 let transactionError = $state<string | null>(null);
@@ -154,6 +161,7 @@ onMount(async () => {
     // Get addresses
     const addresses = await walletClient.getAddresses();
     if (addresses.length > 0) {
+      // Addresses from walletClient.getAddresses() are already properly typed
       address = addresses[0];
     }
     console.log("addresses:", address);
@@ -166,26 +174,26 @@ onMount(async () => {
 // Function to send transaction
 async function sendTransaction(): Promise<void> {
   if (!address || transactionInProgress) return;
-  
+
   try {
     transactionInProgress = true;
     transactionError = null;
     transactionHash = null;
-    
+
     // Set up wallet client
     const walletClient = createWalletClient({
       chain: mainnet,
       // @ts-ignore
       transport: custom(window.ethereum!),
     });
-    
-    // Send transaction
-    const hash = await walletClient.sendTransaction({ 
+
+    // Send transaction - address is guaranteed to be non-null here based on the check above
+    const hash = await walletClient.sendTransaction({
       account: address,
-      to: '0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC',
-      value: parseEther(ethAmount)
+      to: "0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC",
+      value: parseEther(ethAmount),
     });
-    
+
     transactionHash = hash;
   } catch (error) {
     console.error("Transaction error:", error);
@@ -220,7 +228,7 @@ function getImageUrl(id: string): string {
   <div class="bg-muted/30 rounded-md p-4 mb-4">
     <h2 class="text-xl font-bold">Viem Quick Start Example</h2>
     <p>Current Ethereum Block Number: {blockNumber}</p>
-    <p>Your ETH Address: {address ? address : "Not connected"}</p>
+    <p>Your ETH Address: {address || "Not connected"}</p>
     
     {#if address}
       <div class="mt-4 border-t pt-4">
