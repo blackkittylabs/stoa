@@ -23,5 +23,7 @@ We use shadcn-svelte, and all components are already installed:
 ## Checklist
 - [x] miniapp
 - [ ] wallet
+  - [ ] connect button (for web/mobile)
+  - [ ] siwf for Farcaster
 - [ ] tauri
 - [ ] database
