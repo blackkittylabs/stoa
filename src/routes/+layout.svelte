@@ -41,8 +41,8 @@ onMount(() => {
   };
 });
 
-const isWeb = $derived(appContextStore.appContext === "web");
-const isMiniapp = $derived(appContextStore.appContext === "miniapp");
+const isWeb = $derived($appContextStore === "web");
+const isMiniapp = $derived($appContextStore === "miniapp");
 const showDesktopLayout = $derived(isWeb && !isMobile);
 
 // Elegant and efficient page title generator

@@ -1,11 +1,12 @@
-type AppContextType = "miniapp" | "mobile" | "web";
-let appContext = $state<AppContextType>("web");
+import { writable } from "svelte/store";
+
+export type AppContextType = "miniapp" | "mobile" | "web";
+
+const appContext = writable<AppContextType>("web");
 
 export const appContextStore = {
-  get appContext() {
-    return appContext;
-  },
+  subscribe: appContext.subscribe,
   setAppContext(value: AppContextType) {
-    appContext = value;
+    appContext.set(value);
   },
 };

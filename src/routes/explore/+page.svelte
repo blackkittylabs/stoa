@@ -55,7 +55,7 @@ let currentSeedComment = $state("");
 let seedComments = $state<string[]>([]);
 
 // Check if we're in miniapp mode
-const isMiniapp = $derived(appContextStore.appContext === "miniapp");
+const isMiniapp = $derived($appContextStore === "miniapp");
 
 // Create a custom Button event handler function
 function createButtonHandler(fn: () => void) {
