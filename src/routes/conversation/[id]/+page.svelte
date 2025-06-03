@@ -159,7 +159,7 @@ function goToExplore() {
   <div class="w-full py-6">
     <div>
       <button
-        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 mb-4"
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 mb-4"
         on:click={goToExplore}
       >
         ← Back to Explore
@@ -171,14 +171,14 @@ function goToExplore() {
       {#if $isMobile}
         <div class="flex flex-col mb-6">
           <div class="flex items-center mb-4">
-            <div class="w-24 h-24 flex-shrink-0 rounded overflow-hidden mr-4">
+            <div class="w-24 h-24 shrink-0 rounded overflow-hidden mr-4">
               <img
                 src={getImageUrl(conversation.id)}
                 alt={conversation.title}
                 class="w-full h-full object-cover"
               />
             </div>
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
               <ConsensusMeter value={calculateConsensus(conversation)} size={90} showLabel={true} />
             </div>
           </div>
@@ -193,22 +193,22 @@ function goToExplore() {
       <!-- Desktop version -->
       {:else}
         <div class="flex items-start mb-4">
-          <div class="w-28 h-28 flex-shrink-0 rounded overflow-hidden mr-4">
+          <div class="w-28 h-28 shrink-0 rounded overflow-hidden mr-4">
             <img
               src={getImageUrl(conversation.id)}
               alt={conversation.title}
               class="w-full h-full object-cover"
             />
           </div>
-          <div class="flex-grow">
+          <div class="grow">
             <div class="flex justify-between items-start">
-              <div class="flex-grow mr-6">
+              <div class="grow mr-6">
                 <h1 class="text-3xl font-bold mb-2">{conversation.title}</h1>
                 <div class="mb-2 text-sm text-muted-foreground">
                   By {conversation.author} · Created {getRelativeTime(conversation.createdAt)}
                 </div>
               </div>
-              <div class="flex-shrink-0">
+              <div class="shrink-0">
                 <ConsensusMeter value={calculateConsensus(conversation)} size={100} showLabel={true} />
               </div>
             </div>
@@ -231,7 +231,7 @@ function goToExplore() {
           <h3 class="text-xl font-medium mb-2">All Done!</h3>
           <p class="text-muted-foreground mb-4">You've voted on all the comments in this conversation.</p>
           <button
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
             on:click={resetVoting}
           >
             Vote Again
@@ -251,7 +251,7 @@ function goToExplore() {
           {/if}
 
           <!-- Fixed height container for card -->
-          <div class="flex-grow flex flex-col mb-4">
+          <div class="grow flex flex-col mb-4">
             <!-- Current comment card -->
             {#if getCurrentComment()}
               {@const currentComment = getCurrentComment()}
@@ -264,27 +264,27 @@ function goToExplore() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent class="flex-grow overflow-y-auto h-[180px]">
+                <CardContent class="grow overflow-y-auto h-[180px]">
                   <p>{currentComment?.content}</p>
                 </CardContent>
                 <CardFooter class="flex justify-center">
                   <div class="flex gap-2 w-full max-w-md justify-center">
                     <button
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-green-600 text-white hover:bg-green-700"
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-green-600 text-white hover:bg-green-700"
                       on:click={() => handleReaction(currentComment?.id || '', 'agree')}
                     >
                       Agree
                     </button>
 
                     <button
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       on:click={() => handleReaction(currentComment?.id || '', 'disagree')}
                     >
                       Disagree
                     </button>
 
                     <button
-                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 flex-1 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
                       on:click={() => handleReaction(currentComment?.id || '', 'pass')}
                     >
                       Skip
@@ -312,7 +312,7 @@ function goToExplore() {
       <h2 class="text-2xl font-semibold mb-4">Add Comment</h2>
       <Separator class="mb-6" />
 
-      <Card class="shadow-sm">
+      <Card class="shadow-xs">
         <CardContent class="pt-6">
           <div class="space-y-4">
             <Textarea
@@ -322,7 +322,7 @@ function goToExplore() {
             />
             <div class="flex justify-center">
               <button
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                 on:click={submitComment}
                 disabled={!newCommentText.trim()}
               >
@@ -338,7 +338,7 @@ function goToExplore() {
   <div class="w-full py-6 text-center">
     <p class="text-xl mb-4">Conversation not found</p>
     <button
-      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       on:click={goToExplore}
     >
       Go back to Explore
