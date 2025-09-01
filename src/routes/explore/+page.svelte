@@ -299,7 +299,7 @@ function getImageUrl(id: string): string {
             <!-- Mobile version - left side with image and consensus meter at bottom -->
             {#if $isMobile}
               <div class="flex flex-col mr-4 w-24 sm:w-28">
-                <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded overflow-hidden mb-3">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded overflow-hidden mb-3">
                   <img
                     src={getImageUrl(discussion.id)}
                     alt={discussion.title}
@@ -312,7 +312,7 @@ function getImageUrl(id: string): string {
               </div>
             <!-- Desktop version - left side with just the image -->
             {:else}
-              <div class="flex-shrink-0 mr-4">
+              <div class="shrink-0 mr-4">
                 <div class="w-24 h-24 sm:w-28 sm:h-28 rounded overflow-hidden">
                   <img
                     src={getImageUrl(discussion.id)}
@@ -332,7 +332,7 @@ function getImageUrl(id: string): string {
                       <h3 class="text-lg sm:text-xl font-semibold line-clamp-1">{discussion.title}</h3>
                       <p class="text-sm text-muted-foreground">By {discussion.author}</p>
                     </div>
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                       <ConsensusMeter value={calculateConsensus(discussion)} size={90} showLabel={true} />
                     </div>
                   </div>
@@ -364,7 +364,7 @@ function getImageUrl(id: string): string {
   <!-- Floating action button (only for miniapp) -->
   {#if isMiniapp}
     <button
-      class="fixed bottom-24 right-4 shadow-lg rounded-full w-14 h-14 z-50 bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      class="fixed bottom-24 right-4 shadow-lg rounded-full w-14 h-14 z-50 bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2"
       onclick={() => dialogOpen = true}
     >
       <Plus size={24} />
@@ -390,7 +390,7 @@ function getImageUrl(id: string): string {
             <label for="title" class="text-sm font-medium">Title</label>
             <input
               id="title"
-              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               bind:value={title}
               placeholder="Enter conversation title"
             />
@@ -400,7 +400,7 @@ function getImageUrl(id: string): string {
             <label for="description" class="text-sm font-medium">Description</label>
             <textarea
               id="description"
-              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               bind:value={description}
               placeholder="What is this conversation about?"
               rows={3}
@@ -414,14 +414,14 @@ function getImageUrl(id: string): string {
 
           <div class="flex space-x-2">
             <input
-              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               bind:value={currentSeedComment}
               placeholder="Add a comment"
               onkeydown={handleKeyDown}
             />
             <button
               type="button"
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
               onclick={addComment}
             >
               Add
@@ -450,14 +450,14 @@ function getImageUrl(id: string): string {
       <Dialog.Footer class={$isMobile ? "flex-col space-y-2" : ""}>
         <button
           type="button"
-          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-input bg-background hover:bg-accent hover:text-accent-foreground border h-10 px-4 py-2"
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-input bg-background hover:bg-accent hover:text-accent-foreground border h-10 px-4 py-2"
           onclick={() => dialogOpen = false}
         >
           Cancel
         </button>
         <button
           type="submit"
-          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           disabled={!title || !description || seedComments.length === 0}
         >
           Create
